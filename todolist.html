@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>TODO LIST</title>
+	<link rel="stylesheet" type="text/css" href="todolist.css">
+	<script src="https://unpkg.com/vue"></script>
+	<script type="text/javascript" src="todolist.js" defer="defer"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<p>添加任务:</p>
+		<input v-model="todo" id="todo" type="text" name="todo" @keyup.enter="addListItem(todo)" placeholder="输入任务,按Enter确认添加">
+		<div id="remark" v-show="list.length">
+			<span>{{listFilterLength}}个任务未完成</span>
+			<div id="control">
+				<a href="#" @click="deleteAll()">删除所有</a>
+				<a href="#all">所有任务</a>
+				<a href="#unfinished">未完成任务</a>
+				<a href="#finished">完成任务</a>
+			</div>
+		</div>
+		<p>{{hash}}任务列表:</p>
+		<p id="no-list" v-show="!list.length">当前还没有任务</p>
+		<ul id="assignment-list" >
+			<li v-for="item in listFilter" :class='{checked:item.isChecked,editing:editListItem===item}'>
+				<div id="view" @dblclick="edit(item)" >
+					<input id="check" type="checkbox" name="check" v-model="item.isChecked">
+					{{item.label}}
+					<button id="delete" @click="deleteListItem(item)">X</button>
+				</div>
+				<input type="text" name="list-item-editor" v-model="item.label" v-focus="editListItem===item" id="edit" @keyup.enter="editEnd()" @blur="editEnd()" @keyup.esc="editCancel(item)">
+			</li>
+		</ul>
+	</div>
+</body>
+</html>
